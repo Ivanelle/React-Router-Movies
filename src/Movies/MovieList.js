@@ -1,20 +1,30 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'
 
 export default function MovieList(props) {
+  
+  const navigate = useNavigate()
+  const routeToDetails = id => () => {
+    navigate(`movies/${id}`)
+  }
   return (
     <div className="movie-list">
       {props.movies.map(movie => (
-        <MovieDetails key={movie.id} movie={movie} />
+        <MovieDetails routeToDetails={routeToDetails(movie.id)} key={movie.id} movie={movie} />
       ))}
+  
     </div>
+    
   );
 }
 
 function MovieDetails(props) {
   const { title, director, metascore } = props.movie;
+  const { routeToDetails } = props
 
   return (
-    <div className="movie-card">
+    <div className="movie-card" onClick={routeToDetails}>
+      
       <h2>{title}</h2>
       <div className="movie-director">
         Director: <em>{director}</em>
